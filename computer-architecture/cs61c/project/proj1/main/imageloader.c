@@ -57,6 +57,7 @@ Image *readData(char *filename)
 		}
 	}
 
+	fclose(file);
 	return image;
 }
 
