@@ -49,3 +49,5 @@ clean:
 	rm -f gameOfLife
 	rm -f steganography
 	rm -f imageloadertester
+
+.PHONY: imagememcheck
