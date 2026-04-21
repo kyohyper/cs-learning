@@ -22,12 +22,34 @@
 Color *evaluateOnePixel(Image *image, int row, int col)
 {
 	//YOUR CODE HERE
+	Color* color = (Color*) malloc(sizeof(Color));
+	// 获取像素的B位的字节，并获取最低位的值
+	int bit = image->image[image->cols*row+col]->B & 0b1;
+	// -0 = 0b00000000
+	// -1 = 0b11111111
+	color->R = color->G = color->B = -bit;
+
+	return color;
 }
 
 //Given an image, creates a new image extracting the LSB of the B channel.
 Image *steganography(Image *image)
 {
 	//YOUR CODE HERE
+	Image* new_image = (Image*) malloc(sizeof(Image));
+	Color** new_colors = (Color**) malloc(image->cols * image->rows * sizeof(Color*));
+	// 获取隐藏颜色
+	for (int i=0; i<image->rows; i++) {
+		for (int j=0; j<image->cols; j++) {
+			new_colors[i*image->cols+ j] = evaluateOnePixel(image, i, j);
+		}
+	}
+
+	new_image->cols = image->cols;
+	new_image->rows = image->rows;
+	new_image->image = new_colors;
+
+	return new_image;
 }
 
 /*
@@ -46,4 +68,22 @@ Make sure to free all memory before returning!
 int main(int argc, char **argv)
 {
 	//YOUR CODE HERE
+	if (argc != 2)  {
+		printf("Error: invalid arguments' count");
+		return -1;
+	}
+
+	Image* orig_image = readData(argv[1]);
+	if (orig_image == NULL) {
+		printf("Error: failed to open file %s", argv[1]);
+		return -1;
+	}
+
+	Image* secret_image = steganography(orig_image);
+	writeData(secret_image);
+
+	freeImage(secret_image);
+	freeImage(orig_image);
+
+	return 0;
 }
