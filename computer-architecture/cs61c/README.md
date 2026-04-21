@@ -3,7 +3,7 @@
 [视频链接：Bilibili](https://www.bilibili.com/video/BV17b42177VG)<br>
 
 目前进度：9. RISC-V Decisions II<br>
-正在做：Project 1 (康威的生命游戏)<br>
+正在做：无<br>
 
 数字表示法：十进制，二进制，十六进制<br>
 C：C99，C11，指针的指针，内存模型（栈，堆，代码区，静态区），IEEE754浮点数标准<br>
