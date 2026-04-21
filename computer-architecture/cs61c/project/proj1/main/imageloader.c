@@ -47,8 +47,9 @@ Image *readData(char *filename)
 		for (int j=0; j<cols; j++) {
 			Color* color = (Color*) malloc(sizeof(Color));
 			uint8_t r, g, b;
-
-			fscanf("%d %d %d", &r, &g, &b);
+			
+			// 无符号八位整数使用 hhu
+			fscanf(file, "%hhu %hhu %hhu", &r, &g, &b);
 
 			color->R = r;
 			color->G = g;
@@ -65,19 +66,17 @@ Image *readData(char *filename)
 void writeData(Image *image)
 {
 	//YOUR CODE HERE
-	int cols = image->cols, rows = image->rows;
-	int index = 0;
+	uint8_t cols = image->cols, rows = image->rows;
+
+	printf("P3\n");
+	printf("%hhu %hhu\n", cols, rows);
+	printf("255\n");
+
+	Color** color = image->image;
 	for (int i=0; i<rows; i++) {
 		for (int j=0; j<cols; j++) {
-			Color* color = image->image[index];
-
-			printf("%d %d %d ", color->R, color->G, color->B);
+			printf("%3hhu %3hhu %3hhu", (*color)->R, (*color)->G, (*color)->B);
 			color++;
-			printf("%d %d %d ", color->R, color->G, color->B);
-			color++;
-			printf("%d %d %d", color->R, color->G, color->B);
-
-			index += 3;
 
 			if (j != cols-1) printf("   ");
 		}
@@ -89,7 +88,8 @@ void writeData(Image *image)
 void freeImage(Image *image)
 {
 	//YOUR CODE HERE
-	uint8_t length = image->cols * image->rows;
+	// 不能使用 uint8_t ：作为长度，uint8_t太小
+	uint32_t length = image->cols * image->rows;
 	Color** colors = image->image;
 
 	for (int i=0; i<length; i++) free(colors[i]);
