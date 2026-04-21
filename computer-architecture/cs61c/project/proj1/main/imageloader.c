@@ -27,7 +27,11 @@ Image *readData(char *filename)
 {
 	//YOUR CODE HERE
 	Image* image = (Image*) malloc(sizeof(Image));
+
+
 	FILE* file = fopen(filename, "r");
+	if (file == NULL) return NULL;
+
 	int type, cols, rows;
 	int max_color_value;
 
